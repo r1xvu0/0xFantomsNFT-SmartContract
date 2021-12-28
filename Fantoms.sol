@@ -14,7 +14,7 @@ contract Fantoms is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     string hiddenTokenURI = "ipfs://QmYY1gAdVXzpCP7w9ZoNXc1w5jexEqgbrWRsLr941DACQp/";
     string unveiledUri = "REDACTED/";
     string contractMetadata = "";
-    uint256 maxSupply = 10000;
+    uint256 maxSupply = 10001;
     bool canMint = false;
     bool canUnveil = false;
 
@@ -53,6 +53,7 @@ contract Fantoms is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
     function unveil(uint tokenId) public returns(string memory){
         require(canUnveil == true, "Unveiling is disabled at the moment!");
+        require(tokenId < _tokenIdCounter.current(), "Unveiling Fantoms that are not minted is not possible :(");
         string memory unveilUri = concat(uint2str(tokenId), ".json");
         string memory realUri = concat(unveiledUri, unveilUri);
         _setTokenURI(tokenId, realUri);
